@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Retinal Health Diagnostics</title>
+<link rel="icon" href="static/rhd-favicon.png" type="image/x-icon"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+}
+
+/* Style the header */
+.header {
+  padding: 20px;
+  text-align: center;
+  background: #1abc9c;
+  color: white;
+}
+
+/* Increase the font size of the h1 element */
+.header h1 {
+  font-size: 40px;
+}
+
+/* Style the top navigation bar */
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+/* Style the navigation bar links */
+.navbar a {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 20px;
+  text-decoration: none;
+}
+
+/* Right-aligned link */
+.navbar a.right {
+  float: right;
+}
+
+/* Change color on hover */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* Column container */
+.row {  
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Create two unequal columns that sits next to each other */
+/* Sidebar/left column */
+.side {
+  flex: 30%;
+  background-color: #f1f1f1;
+  padding: 20px;
+}
+
+/* Main column */
+.main {   
+  flex: 70%;
+  background-color: white;
+  padding: 20px;
+}
+
+/* Fake image, just for this example */
+.fakeimg {
+  background-color: #1abc9c;
+  width: 100%;
+  padding: 5px;
+}
+
+.topimg {
+  background-color: #1abc9c;
+  width: 100%;
+  padding: 10px;
+}
+
+.headimg {
+  background-color: #1abc9c;
+  width: 25%;
+}
+
+.col-text {
+  width: 100%;
+  padding: 15px;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+}
+
+/* Responsive layout - when the screen is less than 700px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 700px) {
+  .row {   
+    flex-direction: column;
+  }
+}
+
+/* Responsive layout - when the screen is less than 400px wide, make the navigation links stack on top of each other instead of next to each other */
+@media screen and (max-width: 400px) {
+  .navbar a {
+    float: none;
+    width:100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+    <img class="headimg" src="static/rhd-logo.png" alt="Retinal Health Diagnostics";>
+</div>
+
+<div class="navbar" id="myNavbar">
+  <a>Home</a>
+  <a href={{url_for('cataract_reg')}} target="main_page" >Cataracts</a>
+  <a href={{url_for('retinopathy_reg')}} target="main_page" >Diabetic Retinopathy</a>
+  <a href={{url_for('macular_edema_reg')}} target="main_page" >Diabetic Macular Edema</a>
+</div>
+
+<div class="row">
+  <div class="side">
+    <h2>About</h2>
+    <div class="fakeimg" ><img class="fakeimg" src="static/rhd_img_2.jpeg" alt="Retinal Health Diagnostics" style="height:250px;"> </div>
+    <p align="justify">Retinal Health Diagnostics is an Intelligent Computer Aided Diagnostic Application built using a Novel Deep Learning based model called 'Hinge Attention Network' for retinal diseases diagnosis using color fundus retinal scan imaging & digital eye imaging techniques. This model was developed and tested on standard benchmark datasets. Results of this work revelaled the superiority of this approach by achieving state-of-the-art performance over several existing techniques.</p>
+    <h2>Key Services</h2>
+    <h4>Cataracts Diagnosis</h4>
+    <div class="fakeimg">
+    <img class="fakeimg" src="static/rhd_img_3.png" alt="Cataracts Diagnosis" style="height:250px;">
+    </div><br>
+    <h4>Diabetic Retinopathy Diagnosis</h4>
+    <div class="fakeimg">
+    <img class="fakeimg" src="static/rhd_img_4.png" alt="Diabetic Retinopathy Diagnosis" style="height:250px;">
+    </div><br>
+    <h4>Diabetic Macular Edema Diagnosis</h4>
+    <div class="fakeimg">
+    <img class="fakeimg" src="static/rhd_img_5.jpeg" alt="Diabetic Macular Edema" style="height:200px;">
+    </div>
+    <h4><i>Upcoming: </i>Clinical Description Generation</h4>
+    <div class="fakeimg">
+    Lesion context modeling framework along with Pre-trained EfficientNet for learning retinal image representations containing lesion specific clinical details and a Medical Transformer Network with expert-defined keywords predictor for generating retinal image clinical descriptions.
+    </div>
+  </div>
+  <div class="main">
+      <marquee>Welcome to the First ever Intelligent Application for Retinal Diseases Diagnosis!!</marquee>
+    <h2>Healthy Eyes & Healthy Life with Retinal Health Diagnostics, It's all in the Eyes!!</h2>
+    <h5>A Deep Learning based Intelligent Application for Retinal Diseases Diagnosis</h5>
+    <img class="topimg" src="static/rhd_img_1.jpeg" alt="Retinal Health Diagnostics" style="height:200px;"> 
+    <iframe src="{{url_for('home')}}" style="height:970px;width:950px;border:none;" name="main_page" class="main"></iframe>
+    <div class="fakeimg" style="height:250px; weigth:100%;">
+        <div class="col-text">
+        <p>Salient Features:</p>
+        <ul aligh="justify" >
+            <li>Diagnose Cataracts from Extrernal Digital Eye & Color Fundus Retinal Scan images and provide observations, rule-based recommendations along with diagnosis label</li>
+            <li>Diagnose Diabetic Retinopathy, Diabetic Macular Edema from Color Fundus Retinal Scan images and provide the severity level along with possible observations and recommendadtions</li>
+            <li>Provide Explainability of the scan used for diagnosis by the model in the Report generated ensuring the trust towards AI Systems</li>
+            <li>Performance in terms of Accuracy :: Cataract-Eyes Dataset: 96.97%, ODIR Dataset: 97.95%, APTOS 2019 Dataset: 85.64%, Messidor2 Dataset: 94.60%</li>
+        </ul>
+        <div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <h4>&copy Shaik Nagur Shareef, Teja Krishna Cherukuri</h4>
+  <h5>Master of Science in Computer Science <br> Georgia State University, Atlanta, GA </h5>
+</div>
+
+
+
+<script>
+window.onscroll = function() {myFunction()};
+
+var header = document.getElementById("myNavbar");
+var sticky = header.offsetTop;
+
+function myFunction() {
+  if (window.pageYOffset-200 > sticky) {
+    header.classList.add("sticky");
+  } else {
+    header.classList.remove("sticky");
+  }
+}
+</script>
+
+</body>
+</html>

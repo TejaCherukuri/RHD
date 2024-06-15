@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RHD Login</title>
+<link rel="icon" href="static/rhd-favicon.png" type="image/x-icon"/>
+<style>
+body {
+   margin:0;
+   background-repeat: no-repeat;
+   background-size: 100% 100%;
+}
+html {
+    height: 100%
+}
+.input-filed {
+    width: 100%;
+    padding: 2.5px;
+    outline: none;
+    }
+.input-field {
+    width: 105%;
+    padding: 2.5px;
+    outline: none;
+ }
+ .btn {
+    background-color:#ddd;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 60%;
+    opacity: 1;
+ }
+ .btn1 {
+    background-color:blue;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 45%;
+    opacity: 1;
+ }
+ .input-filed:focus {
+    border: 2px solid black;
+  }
+  .input-field:focus {
+    border: 2px solid black;
+  }
+  .btn:hover {
+    opacity: 1;
+  }
+  .btn1:hover {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+<h1><center>Retinal Health Diagnostics</center></h1>
+<p><center>A Computer Aided Intelligent Diagnostic System for Retinal Diseases</center></p>
+<div style="max-width:450px;margin:auto">
+<div style="margin-top: 16%; box-shadow: 0 0 20px #1abc9c;background-color: #1abc9c;">
+    <br><h1 style="text-align:center;color:black">Login</h1>
+    <form name="Login" method="post" action="./authenticate">
+	<center>
+	<table cellpadding="3px">
+	<tr>
+		<th style="text-align:left">User Id:</th>
+		<td><input type="text" name="UserId" placeholder="Enter Your User Id" class="input-filed" required /></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Password:</th>
+		<td><input type="password" name="Password" placeholder="Enter Your Password" class="input-filed" required /></td>
+	</tr>
+	<tr>
+	<td>&nbsp </td>
+	<td>&nbsp </td>
+	</tr>
+	<tr>
+	<tr></tr>
+      <th align="center" colspan="2"><input class="btn" type="submit" value="Submit"/></th>
+	</tr>
+	</table>
+	<br>
+	<br>
+	</center>
+    </form>
+</div>
+</div>
+</body>
+</html>

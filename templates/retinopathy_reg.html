@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Details</title>
+<style>
+body {
+   margin:0;
+   background-repeat: no-repeat;
+   background-size: 130% 130%;
+}
+html {
+    height: 100%
+}
+.input-filed {
+    width: 100%;
+    padding: 2.5px;
+    outline: none;
+    }
+.input-field {
+    width: 105%;
+    padding: 2.5px;
+    outline: none;
+ }
+ .btn {
+    background-color:#ddd;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    opacity: 1;
+ }
+ .btn1 {
+    background-color:#ddd;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    opacity: 1;
+ }
+ .input-filed:focus {
+    border: 2px solid black;
+  }
+  .input-field:focus {
+    border: 2px solid black;
+  }
+  .btn:hover {
+    opacity: 1;
+  }
+  .btn1:hover {
+    opacity: 1;
+  }
+</style>
+
+</head>
+<body>
+<center><h1>Diabetic Retinopathy Severity Diagnosis</h1></center>
+<div style="max-width:500px;margin:auto">
+<div style="margin-top: 10%; box-shadow: 0 0 20px #1abc9c;background-color: #1abc9c;">
+  <br><h1 style="text-align:center;color:black;">Patient Details</h1><br>
+    <form name="DRRegistration" method="post" action="/getDRData" enctype="multipart/form-data">
+	<center>
+	<table cellpadding="5px">
+	<tr>
+		<th style="text-align:left">Full Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><input type="text" name="Name" placeholder="Enter Full Name" class="input-filed" required /></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Mobile No:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><input type="number" name="Ph_No" placeholder="Enter Mobile Number" class="input-filed" required /></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Email Id:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><input type="email" name="Email_Id" placeholder="Enter Email Id" class="input-filed"/></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Gender:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>
+			<input type="radio" name="Gender" value="Male" required>Male</input> &nbsp &nbsp &nbsp &nbsp &nbsp
+			<input type="radio" name="Gender" value="Female" required>Female</input>
+		</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Age:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><input type="text" name="Age" placeholder="Enter Age in Years" class="input-filed" required /></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Address:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><textarea class="input-filed" name="Address" placeholder="Enter Address" rows="2" cols="30"></textarea></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Retinal Scan:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td><input type="file" name="img_path" class="input-filed" required /></td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Test type:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>
+			<select required name="Test" class="input-field" >
+				<option value="">Select</option>
+				<option value="Identification Test">Identification Test</option>
+				<option value="Severity Level Test">Severity Level Test</option>
+			</select>
+		</td>
+	</tr>
+	<tr><th></th><td></td></tr>
+	<tr>
+        <th colspan=2 align="center"><input class="btn" type="submit" value="Submit"/></th>
+	</tr>
+	</table>
+	<br><br>
+	</center>
+</form>
+</div>
+</div>
+</body>
+</html>

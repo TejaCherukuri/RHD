@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Patient Report</title>
+<style>
+body {
+   margin:0;
+   background-repeat: no-repeat;
+   background-size: 130% 130%;
+}
+html {
+    height: 100%
+}
+ .btn {
+    background-color:#ddd;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    opacity: 1;
+ }
+ .btn1 {
+    background-color:#ddd;
+    color: black;
+    font-weight: bold;
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    width: 30%;
+    opacity: 1;
+ }
+  .btn:hover {
+    opacity: 1;
+  }
+  .btn1:hover {
+    opacity: 1;
+  }
+</style>
+</head>
+<body>
+<center><h1>Diabetic Macular Edema Diagnosis</h1></center>
+<div style="max-width:500px;margin:auto">
+<div style="margin-top: 5%; box-shadow: 0 0 20px #1abc9c;background-color: #1abc9c;">
+  <br><h1 style="text-align:center;color:black;">Patient Report</h1><br>
+    <form name="DiagnosisReport" method="post" action="./">
+	<center>
+	<table cellpadding="5px">
+	<tr>
+		<th style="text-align:left">Full Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{name}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Gender:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{gender}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Age:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{age}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Mobile No:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{mobile}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Email Id:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{email}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Address:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{address}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Diagnosis Result:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+		<td>{{diagnosis_label}}</td>
+	</tr>
+	<tr>
+		<th style="text-align:left">Suggestions:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp</th>
+	</tr>
+	<tr>
+		<td style="text-align:left" colspan=2>* {{r1}}</td>
+	</tr>
+	<tr>
+		<td style="text-align:left"colspan=2>* {{r2}}</td>
+	</tr>
+	<tr><th></th><td></td></tr>
+	<tr>
+		<th style="text-align:left">Click here to view Report</th>
+        <th align="left"><a href = "{{file_name}}" target="_blank">View Report</a></th>
+	</tr>
+	</table>
+	<br><br>
+	</center>
+</form>
+</div>
+</div>
+</body>
+</html>
