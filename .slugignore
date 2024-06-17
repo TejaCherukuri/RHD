@@ -1,0 +1,14 @@
+# Ignore all files in following directories
+static/ProcessedImgs/CLAHE/*
+static/ProcessedImgs/GradCAM/*
+static/Reports/*
+static/uploads/*
+TestData/*
+*.ipynb
+
+# Exceptions: do not ignore .gitkeep file in each directory
+!static/ProcessedImgs/CLAHE/.gitkeep
+!static/ProcessedImgs/GradCAM/.gitkeep
+!static/Reports/.gitkeep
+!static/uploads/.gitkeep
+!TestData/.gitkeep
