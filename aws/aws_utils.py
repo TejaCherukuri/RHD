@@ -68,6 +68,7 @@ class AWSUtils:
         """
         try:
             # Upload file object to S3 bucket
+            print(cls.bucket_name)
             cls.s3.upload_fileobj(file_obj, cls.bucket_name, s3_key)
             return True
         except ClientError as e:

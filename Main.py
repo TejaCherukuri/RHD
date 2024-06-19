@@ -180,6 +180,7 @@ def getDRData():
             
             # Upload file to S3
             s3_key = f"static/uploads/{filename}"
+            print(s3_key)
             success = AWSUtils.upload_file_to_s3(file, s3_key)
         
             if not success:
@@ -255,4 +256,4 @@ def getDRData():
     	
 	
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=8000, debug=True)
