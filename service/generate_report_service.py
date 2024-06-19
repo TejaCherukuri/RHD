@@ -1,8 +1,11 @@
 from fpdf import FPDF
 from datetime import date
-
+from io import BytesIO
 from fpdf import FPDF
 from datetime import date
+from aws.aws_utils import AWSUtils
+from PIL import Image
+import tempfile
 
 class PDF(FPDF):
     def header(self):
@@ -48,66 +51,116 @@ class PDF(FPDF):
         # Page number
         self.cell(0, 10, 'Page ' + str(self.page_no()) + '/{nb}', 0, 0, 'C')
 
-def generate_report(name, gender, age, mobile, email, address, test, result, scan_path, r1, r2, observations):
+def generate_report(name, image_name, gender, age, mobile, email, address, test, result, scan_path, r1, r2, observations):
     
-    # Instantiation of inherited class
-    pdf = PDF()
-    pdf.alias_nb_pages()
-    pdf.add_page()
-    pdf.ln(2)
+    filename = name + '_' + image_name
+    try: 
+        # Instantiation of inherited class
+        pdf = PDF()
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.ln(2)
 
-    # Set Caption Font
-    pdf.set_font("Times",'B', size=14)
-    pdf.set_text_color(0,0,255)
-    # Caption
-    pdf.cell(0, 5, "Patient Details",align="C", ln=1)
-    pdf.ln(5)
-    # Set Normal Font
-    pdf.set_font("Times", size=12)
-    pdf.set_text_color(0,0,0)
+        # Set Caption Font
+        pdf.set_font("Times",'B', size=14)
+        pdf.set_text_color(0,0,255)
+        # Caption
+        pdf.cell(0, 5, "Patient Details",align="C", ln=1)
+        pdf.ln(5)
+        # Set Normal Font
+        pdf.set_font("Times", size=12)
+        pdf.set_text_color(0,0,0)
 
-    
-    space = "\t\t\t\t\t\t\t\t\t"
-    patient_details_names = ["Name", "Gender", "Age", "Mobile", "Email Id", "Address"]
-    patient_details_values = [name, gender, age, mobile, email, address]
-    for i in range(len(patient_details_names)):
-        pdf.cell(0, 10, patient_details_names[i].ljust(50, " ") + " : " + space + patient_details_values[i], 0, 1)
-
-    pdf.ln(10)
-    # Set Caption Font
-    pdf.set_font("Times",'B', size=14)
-    pdf.set_text_color(0,0,255)
-    # Caption
-    pdf.cell(0, 5, "Diagonosis Report",align="C", ln=1)
-    pdf.ln(5)
-
-    # Set Normal Font
-    pdf.set_font("Times", size=12)
-    pdf.set_text_color(0,0,0)
-
-    diagnosis_details_names = ["Type of Test", "Diagnosis Result", "Observations", "Recommendation"]
-    diagnosis_details_values = [test, result, observations, r2]
-    for i in range(len(diagnosis_details_names)):
-        pdf.cell(0, 10,diagnosis_details_names[i] + space + " : " + space + diagnosis_details_values[i], 0, 1)
         
-    
-    #add Scan Image
-    pdf.set_text_color(255,0,0)
-    
-    # Add Scan & Processed Images
-    clahe_path = "static/ProcessedImgs/CLAHE/"+name+".png"
-    gradcam_path = "static/ProcessedImgs/GradCAM/"+name+".png"
-    
-    img_names = ["Scan Image", "CLAHE Processed Image", "Grad-CAM Visualization"]
-    imgs_list = [scan_path, clahe_path, gradcam_path]
-    for ind, img in enumerate(imgs_list):
-        pdf.cell(0, 10,img_names[ind], 0, 2)
-        pdf.image(img , x=60, w=85, h=80,)
+        space = "\t\t\t\t\t\t\t\t\t"
+        patient_details_names = ["Name", "Gender", "Age", "Mobile", "Email Id", "Address"]
+        patient_details_values = [name, gender, age, mobile, email, address]
+        for i in range(len(patient_details_names)):
+            pdf.cell(0, 10, patient_details_names[i].ljust(50, " ") + " : " + space + patient_details_values[i], 0, 1)
+
+        pdf.ln(10)
+        # Set Caption Font
+        pdf.set_font("Times",'B', size=14)
+        pdf.set_text_color(0,0,255)
+        # Caption
+        pdf.cell(0, 5, "Diagonosis Report",align="C", ln=1)
+        pdf.ln(5)
+
+        # Set Normal Font
+        pdf.set_font("Times", size=12)
+        pdf.set_text_color(0,0,0)
+
+        diagnosis_details_names = ["Type of Test", "Diagnosis Result", "Observations", "Recommendation"]
+        diagnosis_details_values = [test, result, observations, r2]
+        for i in range(len(diagnosis_details_names)):
+            pdf.cell(0, 10,diagnosis_details_names[i] + space + " : " + space + diagnosis_details_values[i], 0, 1)
+                
+        #add Scan Image
+        pdf.set_text_color(255,0,0)
+  
+       # Load Scan Image from S3
+        scan_img = AWSUtils.load_file_from_s3(scan_path)
+
+        if scan_img:
+            with tempfile.NamedTemporaryFile(suffix=".jpeg") as temp_file:
+                img = Image.open(BytesIO(scan_img.read()))
+                img = img.resize((85, 80))
+                img.save(temp_file, format='JPEG')
+                temp_file.seek(0)
+                pdf.ln(5)
+                pdf.cell(0, 10, "Scan Image", 0, 2)
+                pdf.image(temp_file.name, x=60, y=None, w=85, h=80)
+
+        # Load CLAHE Processed Image from S3
+        clahe_path = f"static/processed_imgs/CLAHE/{filename}.png"
+        clahe_img = AWSUtils.load_file_from_s3(clahe_path)
+
+        if clahe_img:
+            with tempfile.NamedTemporaryFile(suffix=".jpeg") as temp_file:
+                img = Image.open(BytesIO(clahe_img.read()))
+                img = img.resize((85, 80))
+                img.save(temp_file, format='JPEG')
+                temp_file.seek(0)
+                pdf.ln(5)
+                pdf.cell(0, 10, "CLAHE Image", 0, 2)
+                pdf.image(temp_file.name, x=60, y=None, w=85, h=80)
+
+        # Load Grad-CAM Visualization from S3
+        gradcam_path = f"static/processed_imgs/GradCAM/{filename}.png"
+        gradcam_img = AWSUtils.load_file_from_s3(gradcam_path)
+        if gradcam_img:
+            with tempfile.NamedTemporaryFile(suffix=".jpeg") as temp_file:
+                img = Image.open(BytesIO(gradcam_img.read()))
+                img = img.resize((85, 80))
+                img.save(temp_file, format='JPEG')
+                temp_file.seek(0)
+                pdf.ln(5)
+                pdf.cell(0, 10, "GradCAM Image", 0, 2)
+                pdf.image(temp_file.name, x=60, y=None, w=85, h=80)
+       
+        # Set Normal Font
+        pdf.set_font("Times", size=10)
+        pdf.set_text_color(0,0,0)
+        pdf.ln(5)
+        pdf.cell(0, 10,"Note: Correlate the information provided clinically, Write to 'rhd.reports@gmail.com' for any queries.", 0, 1)
         
-    # Set Normal Font
-    pdf.set_font("Times", size=10)
-    pdf.set_text_color(0,0,0)
-    pdf.ln(5)
-    pdf.cell(0, 10,"Note: Correlate the information provided clinically, Write to 'rhd.reports@gmail.com' for any queries.", 0, 1)
-    
-    pdf.output("static/Reports/"+name+".pdf", "F")
+        # Output PDF to S3
+        # Use NamedTemporaryFile to create a temporary file to store PDF content
+        with tempfile.NamedTemporaryFile(suffix=".pdf") as temp_pdf:
+            pdf.output(temp_pdf.name, 'F')
+            temp_pdf.seek(0)
+
+            # Upload PDF to S3
+            pdf_key = f"static/reports/{name}.pdf"
+            success = AWSUtils.upload_file_to_s3(temp_pdf, pdf_key)
+
+            if success:
+                print("PDF Report Uploaded to S3")
+                return True, pdf_key
+            else:
+                return False, None
+            
+    except Exception as e:
+            print(f"Error generating PDF report: {e}")
+            return False, None
+

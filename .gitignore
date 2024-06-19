@@ -2,3 +2,4 @@
 **/__pycache__/
 retinal_health_diagnostics.db
 **/.ipynb_checkpoints/
+rhd_env

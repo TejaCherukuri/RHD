@@ -8,6 +8,7 @@ from repository import db_repository as repo
 from service import generate_report_service as report_gen
 from service.email_service import send_email
 from werkzeug.utils import secure_filename
+from aws.aws_utils import AWSUtils
 
 
 app = Flask(__name__)
@@ -95,9 +96,6 @@ def getCeteractData():
         
         apply_clahe(img_path, name)
         report_gen.generate_report(name, gender, age, mobile, email, address, "Cateract Diagnosis: "+scan_type, cataract_label, img_path, r1, r2, observations)
-        pdf_report_path = "static/Reports/"+name+".pdf"
-        with open(pdf_report_path, 'rb') as f:
-            report = f.read()
         
         # repo.write_to_db(name, gender, age, mobile, email, address, "Cateract Diagnosis - "+scan_type, cataract_label, report)
         send_email(to_mail_list, name, "Cateract Diagnosis: "+scan_type, cataract_label)
@@ -172,12 +170,29 @@ def getDRData():
         age = request.form['Age']
         address = request.form['Address']
         file = request.files['img_path']
-        file_name = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD'], file_name))
-        img_path = os.path.join(app.config['UPLOAD'], file_name)
-        test_type = request.form['Test']
+
+        if file.filename == '':
+            return 'No selected file'
         
-        report = None
+        try:
+            # Use secure_filename to sanitize the filename
+            filename = secure_filename(file.filename)
+            
+            # Upload file to S3
+            s3_key = f"static/uploads/{filename}"
+            success = AWSUtils.upload_file_to_s3(file, s3_key)
+        
+            if not success:
+                return 'Error uploading file to S3'
+            
+            print(f'File uploaded successfully to S3')
+        
+        except Exception as e:
+            return f"Error uploading file: {e}"
+        
+        img_path = s3_key  # Use the S3 key for processing
+    
+        test_type = request.form['Test']
         
         s0 = "--None--"
         s1 = "Maintain Controlled Blood Sugar Levels, Cholestrol & BP"
@@ -219,22 +234,19 @@ def getDRData():
         else:
             r1, r2 = s5, s6
             observations = "Lesions - MA, HE, Hm. New vessels growth. Neovascularisation. Endangered Retinal Detachment"
-        
-        
+               
         if test_type == 'Identification Test':
             if('Positive' in dr_label):
                 dr_label = "Retinoapthy Positive"
                 r1, r2 = s1, s7
                 observations = "Visual complications found due to microvascular abnormal lesions"
                 
+        image_name = filename.split('.')[0]
+        print("Applying CLAHE")
+        apply_clahe(img_path, name, image_name)
+        report_gen.generate_report(name, image_name, gender, age, mobile, email, address, "Retinopathy Diagnosis: "+test_type, dr_label, img_path, r1, r2, observations)
         
-        apply_clahe(img_path, name)
-        report_gen.generate_report(name, gender, age, mobile, email, address, "Retinopathy Diagnosis: "+test_type, dr_label, img_path, r1, r2, observations)
-        pdf_report_path = "static/Reports/"+name+".pdf"
-        with open(pdf_report_path, 'rb') as f:
-            report = f.read()
-        
-        # repo.write_to_db(name, gender, age, mobile, email, address, "Retinopathy Diagnosis - "+test_type, dr_label, report)
+         # repo.write_to_db(name, gender, age, mobile, email, address, "Retinopathy Diagnosis - "+test_type, dr_label, report)
         send_email(to_mail_list, name, "Retinopathy Diagnosis: "+test_type, dr_label)
     except Exception as e:
         print("Exception Occured: "+str(e))
