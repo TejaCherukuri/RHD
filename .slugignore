@@ -5,6 +5,7 @@ static/Reports/*
 static/uploads/*
 TestData/*
 *.ipynb
+*.h5
 
 # Exceptions: do not ignore .gitkeep file in each directory
 !static/ProcessedImgs/CLAHE/.gitkeep
